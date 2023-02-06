@@ -1,7 +1,9 @@
 using Mango.Services.Identity.DbContext;
+using Mango.Services.Identity.Initializer;
 using Mango.Services.Identity.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace Mango.Services.Identity
 {
@@ -18,18 +20,18 @@ namespace Mango.Services.Identity
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddDbContext<ApplicationDbContext>(optionsBuilder => optionsBuilder.UseSqlServer(connectionString));
 
+            //Add identity
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
-            builder.Services.AddIdentityServer
-                (opt =>
+            builder.Services.AddIdentityServer(options =>
             {
-                opt.Events.RaiseErrorEvents = true;
-                opt.Events.RaiseInformationEvents = true;
-                opt.Events.RaiseFailureEvents = true;
-                opt.Events.RaiseSuccessEvents = true;
-                opt.EmitStaticAudienceClaim = true;
+                options.Events.RaiseErrorEvents = true;
+                options.Events.RaiseInformationEvents = true;
+                options.Events.RaiseFailureEvents = true;
+                options.Events.RaiseSuccessEvents = true;
+                options.EmitStaticAudienceClaim = true;
             })
             .AddInMemoryIdentityResources(SD.IdentityResources)
             .AddInMemoryApiScopes(SD.ApiScopes)
@@ -37,7 +39,8 @@ namespace Mango.Services.Identity
             .AddAspNetIdentity<ApplicationUser>()
             .AddDeveloperSigningCredential();
 
-
+            builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+            
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -52,9 +55,11 @@ namespace Mango.Services.Identity
             app.UseStaticFiles();
 
             app.UseRouting();
-            //app.UseIdentityServer();
-            app.UseAuthorization();
 
+            app.UseIdentityServer();
+            
+            app.UseAuthorization();
+            
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
