@@ -1,6 +1,8 @@
+using Duende.IdentityServer.Services;
 using Mango.Services.Identity.DbContext;
 using Mango.Services.Identity.Initializer;
 using Mango.Services.Identity.Models;
+using Mango.Services.Identity.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -40,7 +42,8 @@ namespace Mango.Services.Identity
             .AddDeveloperSigningCredential();
 
             builder.Services.AddScoped<IDbInitializer, DbInitializer>();
-            
+            builder.Services.AddScoped<IProfileService, ProfileService>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -55,11 +58,11 @@ namespace Mango.Services.Identity
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            
             app.UseIdentityServer();
-            
+
             app.UseAuthorization();
-            
+
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");

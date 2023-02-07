@@ -32,6 +32,12 @@ namespace Mango.Web.Services
                     //message.Content = new StringContent(JsonConvert.SerializeObject(apiRequest.Data), Encoding.UTF8, "appsettings/text");
                     message.Content = JsonContent.Create(apiRequest.Data);
                 }
+
+                if (!string.IsNullOrEmpty(apiRequest.AccessToken))
+                {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiRequest.AccessToken);
+                }
+
                 switch (apiRequest.ApiType)
                 {
                     case SD.ApiType.POST:
