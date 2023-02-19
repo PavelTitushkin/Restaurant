@@ -16,14 +16,17 @@ namespace Mango.Web
             //AddHttpClient
             builder.Services.AddHttpClient<ICartService, CartService>();
             builder.Services.AddHttpClient<IProductServices, ProductService>();
+            builder.Services.AddHttpClient<ICouponService, CouponService>();
 
             //AddDependensies
             builder.Services.AddScoped<ICartService, CartService>();
             builder.Services.AddScoped<IProductServices, ProductService>();
+            builder.Services.AddScoped<ICouponService, CouponService>();
 
             //AddInfo
             SD.ProductAPIBase = builder.Configuration["ServiceURLs:ProductAPI"];
             SD.ShoppingCartAPIBase = builder.Configuration["ServiceURLs:ShoppingCartAPI"];
+            SD.CouponAPIBase = builder.Configuration["ServiceURLs:CouponAPI"];
 
             //Add authentication
             builder.Services.AddAuthentication(opt =>

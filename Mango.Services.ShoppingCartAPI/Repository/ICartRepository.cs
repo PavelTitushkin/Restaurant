@@ -4,9 +4,11 @@ namespace Mango.Services.ShoppingCartAPI.Repository
 {
     public interface ICartRepository
     {
-        Task<CartDto> GetCartByUserId(string userId);
-        Task<CartDto> CreateUpdateCart(CartDto cartDto);
-        Task<bool> RemoveFromCart(int cartDetailsId);
-        Task<bool> ClearCart(string userId);
+        Task<CartDto> GetCartByUserIdAsync(string userId);
+        Task<CartDto> CreateUpdateCartAsync(CartDto cartDto);
+        Task<bool> RemoveFromCartAsync(int cartDetailsId);
+        Task<bool> ClearCartAsync(string userId);
+        Task<bool> ApplyCouponAsync(string userId, string couponCode);
+        Task<bool> RemoveCouponAsync(string userId);
     }
 }

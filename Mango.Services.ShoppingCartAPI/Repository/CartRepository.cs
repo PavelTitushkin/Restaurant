@@ -17,7 +17,27 @@ namespace Mango.Services.ShoppingCartAPI.Repository
             _mapper = mapper;
         }
 
-        public async Task<bool> ClearCart(string userId)
+        public async Task<bool> ApplyCouponAsync(string userId, string couponCode)
+        {
+            var cartFromDb = await _db.CartHeaders.FirstOrDefaultAsync(u => u.UserId == userId);
+            cartFromDb.CouponCode = couponCode;
+            _db.CartHeaders.Update(cartFromDb);
+            await _db.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> RemoveCouponAsync(string userId)
+        {
+            var cartFromDb = await _db.CartHeaders.FirstOrDefaultAsync(u => u.UserId == userId);
+            cartFromDb.CouponCode = "";
+            _db.CartHeaders.Update(cartFromDb);
+            await _db.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> ClearCartAsync(string userId)
         {
             var cartHeaderFromDb = await _db.CartHeaders.FirstOrDefaultAsync(u => u.UserId == userId);
             if(cartHeaderFromDb != null)
@@ -32,7 +52,7 @@ namespace Mango.Services.ShoppingCartAPI.Repository
             return false;
         }
 
-        public async Task<CartDto> CreateUpdateCart(CartDto cartDto)
+        public async Task<CartDto> CreateUpdateCartAsync(CartDto cartDto)
         {
             Cart cart = _mapper.Map<Cart>(cartDto);
 
@@ -89,7 +109,7 @@ namespace Mango.Services.ShoppingCartAPI.Repository
             return _mapper.Map<CartDto>(cart);
         }
 
-        public async Task<CartDto> GetCartByUserId(string userId)
+        public async Task<CartDto> GetCartByUserIdAsync(string userId)
         {
             var cart = new Cart()
             {
@@ -103,7 +123,7 @@ namespace Mango.Services.ShoppingCartAPI.Repository
             return _mapper.Map<CartDto>(cart);
         }
 
-        public async Task<bool> RemoveFromCart(int cartDetailsId)
+        public async Task<bool> RemoveFromCartAsync(int cartDetailsId)
         {
             try
             {

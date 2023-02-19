@@ -56,7 +56,6 @@ namespace Mango.Web.Controllers
                 CartHeader = new CartHeaderDto
                 {
                     UserId = User.Claims.Where(u => u.Type == "sub")?.FirstOrDefault()?.Value,
-                    CouponCode = null
                 }
             };
 
