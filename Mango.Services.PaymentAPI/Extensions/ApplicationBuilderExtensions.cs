@@ -1,13 +1,13 @@
-﻿using Mango.Services.OrderAPI.Messaging;
+﻿using Mango.Services.PaymentAPI.Messaging;
 
-namespace Mango.Services.OrderAPI.Extensions
+namespace Mango.Services.PaymentAPI.Extensions
 {
     public static class ApplicationBuilderExtensions
     {
-        public static IAzureServiceBusConsumerOrder ServiceBusConsumer { get; set; }
+        public static IAzureServiceBusConsumerPayment ServiceBusConsumer { get; set; }
         public static IApplicationBuilder UseAzureServiceBusConsumer(this IApplicationBuilder app)
         {
-            ServiceBusConsumer = app.ApplicationServices.GetService<IAzureServiceBusConsumerOrder>();
+            ServiceBusConsumer = app.ApplicationServices.GetService<IAzureServiceBusConsumerPayment>();
             var hostApplicationLife = app.ApplicationServices.GetService<IHostApplicationLifetime>();
 
             hostApplicationLife.ApplicationStarted.Register(OnStart);

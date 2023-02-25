@@ -1,9 +1,10 @@
-﻿using Mango.Services.ShoppingCartAPI.Models.DTO;
+﻿using Mango.Services.ShoppingCartAPI.MessageBus;
+using Mango.Services.ShoppingCartAPI.Models.DTO;
 using System.ComponentModel.DataAnnotations;
 
 namespace Mango.Services.ShoppingCartAPI.Messages
 {
-    public class CheckoutHeaderDto
+    public class CheckoutHeaderDto : BaseMessage
     {
         public int CartHeaderId { get; set; }
         public string UserId { get; set; }

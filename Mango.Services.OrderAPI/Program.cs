@@ -1,5 +1,6 @@
 using Mango.Services.OrderAPI.DataBase;
 using Mango.Services.OrderAPI.Extensions;
+using Mango.Services.OrderAPI.MessageBus;
 using Mango.Services.OrderAPI.Messaging;
 using Mango.Services.OrderAPI.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -82,7 +83,8 @@ namespace Mango.Services.OrderAPI
             var optionBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
             optionBuilder.UseSqlServer(connectionString);
             builder.Services.AddSingleton(new OrderRepository(optionBuilder.Options));
-            builder.Services.AddSingleton<IAzureServiceBusConsumer, AzureServiceBusConsumer>();
+            builder.Services.AddSingleton<IAzureServiceBusConsumerOrder, AzureServiceBusConsumerOrder>();
+            builder.Services.AddSingleton<IMessageBus, AzureServiceBusMessageBus>();
 
             var app = builder.Build();
 
