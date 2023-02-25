@@ -2,7 +2,7 @@
 
 namespace Mango.Services.OrderAPI.Repository
 {
-    public interface IOrderRepository
+    public interface IOrderlRepository
     {
         Task<bool> AddOrderAsync(OrderHeader orderHeader);
         Task UpdateOrderPaymentStatus(int orderHeaderId, bool paid);

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Mango.Services.OrderAPI.Repository
 {
-    public class OrderRepository : IOrderRepository
+    public class OrderRepository : IOrderlRepository
     {
         private readonly DbContextOptions<ApplicationDbContext> _dbContext;
 
