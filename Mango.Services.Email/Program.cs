@@ -27,8 +27,8 @@ namespace Mango.Services.Email
 
             builder.Services.AddScoped<IEmailRepository, EmailRepository>();
             builder.Services.AddSingleton(new EmailRepository(optionBuilder.Options));
-            builder.Services.AddSingleton <IAzureServiceBusConsumerEmail, AzureServiceBusConsumerEmail>();
-
+            //builder.Services.AddSingleton <IAzureServiceBusConsumerEmail, AzureServiceBusConsumerEmail>();
+            builder.Services.AddHostedService<RabbitMQPaymentConsumer>();
 
             var app = builder.Build();
 
@@ -46,7 +46,7 @@ namespace Mango.Services.Email
 
             app.MapControllers();
 
-            app.UseAzureServiceBusConsumer();
+            //app.UseAzureServiceBusConsumer();
 
             app.Run();
         }

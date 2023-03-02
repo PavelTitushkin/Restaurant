@@ -1,4 +1,5 @@
 using AutoMapper;
+using Mango.Services.OrderAPI.RabbitMQ;
 using Mango.Services.ShoppingCartAPI.DataBase;
 using Mango.Services.ShoppingCartAPI.MessageBus;
 using Mango.Services.ShoppingCartAPI.Repository;
@@ -80,6 +81,7 @@ namespace Mango.Services.ShoppingCartAPI
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             //Add dependensies
+            builder.Services.AddScoped<IRabbitMqServiceProducer, RabbitMQServiceMessage>();
             builder.Services.AddSingleton<IMessageBus, AzureServiceBusMessageBus>();
             builder.Services.AddScoped<ICartRepository, CartRepository>();
             builder.Services.AddScoped<ICouponRepository, CouponRepository>();

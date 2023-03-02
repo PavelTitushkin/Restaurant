@@ -10,16 +10,16 @@ namespace Mango.Services.OrderAPI.Messaging
 {
     public class AzureServiceBusConsumerOrder : IAzureServiceBusConsumerOrder
     {
-        private readonly string serviceBusConnectionString;
-        private readonly string subscriptionCheckout;
-        private readonly string checkoutMessageTopic;
-        private readonly string orderPaymentProcessTopic;
-        private readonly string orderUpdatePaymentResultTopic;
+        //private readonly string serviceBusConnectionString;
+        //private readonly string subscriptionCheckout;
+        //private readonly string checkoutMessageTopic;
+        //private readonly string orderPaymentProcessTopic;
+        //private readonly string orderUpdatePaymentResultTopic;
 
         private readonly IConfiguration _configuration;
         private readonly OrderRepository _orderRepository;
-        private ServiceBusProcessor checkoutProcessor;
-        private ServiceBusProcessor orderUpadatePaymentStatusProcessor;
+        //private ServiceBusProcessor checkoutProcessor;
+        //private ServiceBusProcessor orderUpadatePaymentStatusProcessor;
 
         private readonly IMessageBus _messageBus;
 
@@ -29,35 +29,35 @@ namespace Mango.Services.OrderAPI.Messaging
             _configuration = configuration;
             _messageBus = messageBus;
 
-            serviceBusConnectionString = _configuration.GetValue<string>("ServiceBusConnectionString");
-            subscriptionCheckout = _configuration.GetValue<string>("SubscriptionCheckout");
-            checkoutMessageTopic = _configuration.GetValue<string>("CheckoutMessageTopic");
-            orderPaymentProcessTopic = _configuration.GetValue<string>("OrderPaymentProcessTopics");
-            orderUpdatePaymentResultTopic = _configuration.GetValue<string>("OrderUpdatePaymentResultTopic");
+            //serviceBusConnectionString = _configuration.GetValue<string>("ServiceBusConnectionString");
+            //subscriptionCheckout = _configuration.GetValue<string>("SubscriptionCheckout");
+            //checkoutMessageTopic = _configuration.GetValue<string>("CheckoutMessageTopic");
+            //orderPaymentProcessTopic = _configuration.GetValue<string>("OrderPaymentProcessTopics");
+            //orderUpdatePaymentResultTopic = _configuration.GetValue<string>("OrderUpdatePaymentResultTopic");
 
-            var client = new ServiceBusClient(serviceBusConnectionString);
-            checkoutProcessor = client.CreateProcessor(checkoutMessageTopic, subscriptionCheckout);
-            orderUpadatePaymentStatusProcessor = client.CreateProcessor(orderUpdatePaymentResultTopic, subscriptionCheckout);
+            //var client = new ServiceBusClient(serviceBusConnectionString);
+            //checkoutProcessor = client.CreateProcessor(checkoutMessageTopic, subscriptionCheckout);
+            //orderUpadatePaymentStatusProcessor = client.CreateProcessor(orderUpdatePaymentResultTopic, subscriptionCheckout);
         }
 
         public async Task Start()
         {
-            checkoutProcessor.ProcessMessageAsync += OnCheckoutMessageReceivedAsync;
-            checkoutProcessor.ProcessErrorAsync += ErrorHeandler;
-            await checkoutProcessor.StartProcessingAsync();
+            //checkoutProcessor.ProcessMessageAsync += OnCheckoutMessageReceivedAsync;
+            //checkoutProcessor.ProcessErrorAsync += ErrorHeandler;
+            //await checkoutProcessor.StartProcessingAsync();
 
-            orderUpadatePaymentStatusProcessor.ProcessMessageAsync += OnOrderPaymentUpdateReceivedAsync;
-            orderUpadatePaymentStatusProcessor.ProcessErrorAsync += ErrorHeandler;
-            await orderUpadatePaymentStatusProcessor.StartProcessingAsync();
+            //orderUpadatePaymentStatusProcessor.ProcessMessageAsync += OnOrderPaymentUpdateReceivedAsync;
+            //orderUpadatePaymentStatusProcessor.ProcessErrorAsync += ErrorHeandler;
+            //await orderUpadatePaymentStatusProcessor.StartProcessingAsync();
         }
 
         public async Task Stop()
         {
-            await checkoutProcessor.StopProcessingAsync();
-            await checkoutProcessor.DisposeAsync();
+            //await checkoutProcessor.StopProcessingAsync();
+            //await checkoutProcessor.DisposeAsync();
 
-            await orderUpadatePaymentStatusProcessor.StopProcessingAsync();
-            await orderUpadatePaymentStatusProcessor.DisposeAsync();
+            //await orderUpadatePaymentStatusProcessor.StopProcessingAsync();
+            //await orderUpadatePaymentStatusProcessor.DisposeAsync();
         }
 
         Task ErrorHeandler(ProcessErrorEventArgs args)
@@ -119,7 +119,7 @@ namespace Mango.Services.OrderAPI.Messaging
 
             try
             {
-                await _messageBus.PublishMessageAsync(paymentRequestMessage, orderPaymentProcessTopic);
+                //await _messageBus.PublishMessageAsync(paymentRequestMessage, orderPaymentProcessTopic);
                 await args.CompleteMessageAsync(args.Message);
             }
             catch (Exception ex)

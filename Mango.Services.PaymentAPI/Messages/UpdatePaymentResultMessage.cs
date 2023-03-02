@@ -1,8 +1,8 @@
-﻿using Mango.Services.PaymentAPI.MessageBus;
+﻿using Mango.Services.PaymentAPI.RabbitMQ;
 
 namespace Mango.Services.PaymentAPI.Messages
 {
-    public class UpdatePaymentResultMessage : BaseMessage
+    public class UpdatePaymentResultMessage : BaseMessageRabbitMq
     {
         public int OrderId { get; set; }
         public bool Status { get; set; }

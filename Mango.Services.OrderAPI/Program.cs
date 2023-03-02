@@ -2,6 +2,7 @@ using Mango.Services.OrderAPI.DataBase;
 using Mango.Services.OrderAPI.Extensions;
 using Mango.Services.OrderAPI.MessageBus;
 using Mango.Services.OrderAPI.Messaging;
+using Mango.Services.OrderAPI.RabbitMQ;
 using Mango.Services.OrderAPI.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -80,11 +81,16 @@ namespace Mango.Services.OrderAPI
             //builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             //Add dependensies
+            builder.Services.AddHostedService<RabbitMQCheckoutConsumer>();
+            builder.Services.AddHostedService<RabbitMQPaymentConsumer>();
+
             var optionBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
             optionBuilder.UseSqlServer(connectionString);
+
             builder.Services.AddSingleton(new OrderRepository(optionBuilder.Options));
             builder.Services.AddSingleton<IAzureServiceBusConsumerOrder, AzureServiceBusConsumerOrder>();
             builder.Services.AddSingleton<IMessageBus, AzureServiceBusMessageBus>();
+            builder.Services.AddSingleton<IRabbitMqServiceProducer, RabbitMQServiceMessage>();
 
             var app = builder.Build();
 
@@ -99,10 +105,9 @@ namespace Mango.Services.OrderAPI
 
             app.UseAuthorization();
 
-
             app.MapControllers();
 
-            app.UseAzureServiceBusConsumer();
+            //app.UseAzureServiceBusConsumer();
 
             app.Run();
         }
